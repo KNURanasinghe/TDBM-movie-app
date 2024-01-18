@@ -7,7 +7,7 @@ class Movie {
 
   Movie({
     this.backdropPath,
-    this.id,
+    this.id, 
     this.overview,
     this.posterPath,
     this.title,
