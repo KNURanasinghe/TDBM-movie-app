@@ -19,75 +19,77 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(
-                  Icons.menu,
-                ),
-                Text(
-                  "TMDB movies",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-                Icon(Icons.favorite)
-              ],
-            ),
-            FutureBuilder(
-              future: service.getMovies(page: page),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  movies = [...movies, ...snapshot.data!];
-                  movies = movies.toSet().toList();
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: movies.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 5,
-                            crossAxisSpacing: 5,
-                            childAspectRatio: 0.59),
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Flexible(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey,
-                                  image: DecorationImage(
-                                      fit: BoxFit.fitHeight,
-                                      image: NetworkImage(
-                                          "https://image.tmdb.org/t/p/w500${movies[index].posterPath}"))),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    Icons.menu,
+                  ),
+                  Text(
+                    "TMDB movies",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                  Icon(Icons.favorite)
+                ],
+              ),
+              FutureBuilder(
+                future: service.getMovies(page: page),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    movies = [...movies, ...snapshot.data!];
+                    movies = movies.toSet().toList();
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: movies.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 5,
+                              crossAxisSpacing: 5,
+                              childAspectRatio: 0.59),
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Flexible(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey,
+                                    image: DecorationImage(
+                                        fit: BoxFit.fitHeight,
+                                        image: NetworkImage(
+                                            "https://image.tmdb.org/t/p/w500${movies[index].posterPath}"))),
+                              ),
                             ),
-                          ),
-                          Text(
-                            movies[index].title.toString(),
-                            style: const TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                }
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    page++;
-                  });
+                            Text(
+                              movies[index].title.toString(),
+                              style: const TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator());
                 },
-                child: const Text("Load More"))
-          ],
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      page++;
+                    });
+                  },
+                  child: const Text("Load More"))
+            ],
+          ),
         ),
       ),
     ));
