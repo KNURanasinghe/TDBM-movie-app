@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/Screens/movie_Details.dart';
 import 'package:movie_app/modals/movies_model.dart';
 import 'package:movie_app/services/api_sevices.dart';
 
@@ -53,27 +55,36 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisSpacing: 5,
                               childAspectRatio: 0.59),
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Flexible(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.grey,
-                                    image: DecorationImage(
-                                        fit: BoxFit.fitHeight,
-                                        image: NetworkImage(
-                                            "https://image.tmdb.org/t/p/w500${movies[index].posterPath}"))),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) =>  MovieDetails(movie:movies[index] ),
+                                ));
+                          },
+                          child: Column(
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey,
+                                      image: DecorationImage(
+                                          fit: BoxFit.fitHeight,
+                                          image: NetworkImage(
+                                              "https://image.tmdb.org/t/p/w500${movies[index].posterPath}"))),
+                                ),
                               ),
-                            ),
-                            Text(
-                              movies[index].title.toString(),
-                              style: const TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            )
-                          ],
+                              Text(
+                                movies[index].title.toString(),
+                                style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )
+                            ],
+                          ),
                         );
                       },
                     );
